@@ -1,12 +1,10 @@
 {
-    "name": "UnityGameFramework.Runtime",
+    "name": "GameFramework",
     "rootNamespace": "",
-    "references": [
-        "GUID:d4423f092a76e554396d1bccfce12775"
-    ],
+    "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],
-    "allowUnsafeCode": false,
+    "allowUnsafeCode": true,
     "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": true,
