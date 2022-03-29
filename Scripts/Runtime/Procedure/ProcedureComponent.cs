@@ -10,6 +10,8 @@ using GameFramework.Fsm;
 using GameFramework.Procedure;
 using System;
 using System.Collections;
+using System.IO;
+using System.Linq;
 using UnityEngine;
 
 namespace UnityGameFramework.Runtime
@@ -69,10 +71,20 @@ namespace UnityGameFramework.Runtime
 
         private IEnumerator Start()
         {
+            var list = m_AvailableProcedureTypeNames.ToList();
+            var allTypes = HotfixComponent.HotfixAssembly.GetTypes();
+            foreach (var type in allTypes)
+            {
+                if (type.Namespace == "Hotfix.Procedure")
+                    list.Add(type.FullName);
+            }
+            m_AvailableProcedureTypeNames = list.ToArray();
             ProcedureBase[] procedures = new ProcedureBase[m_AvailableProcedureTypeNames.Length];
             for (int i = 0; i < m_AvailableProcedureTypeNames.Length; i++)
             {
-                Type procedureType = Utility.Assembly.GetType(m_AvailableProcedureTypeNames[i]);
+                //todo HotfixAssembly后续使用GF框架Manager写法
+                Type procedureType = Utility.Assembly.GetType(m_AvailableProcedureTypeNames[i]) ??
+                                     HotfixComponent.HotfixAssembly.GetType(m_AvailableProcedureTypeNames[i]);
                 if (procedureType == null)
                 {
                     Log.Error("Can not find procedure type '{0}'.", m_AvailableProcedureTypeNames[i]);

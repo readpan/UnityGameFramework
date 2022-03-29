@@ -304,6 +304,7 @@ Transform:
   - {fileID: 463618}
   - {fileID: 430602}
   - {fileID: 450964}
+  - {fileID: 4957839354932774207}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -326,7 +327,7 @@ MonoBehaviour:
   m_LogHelperTypeName: UnityGameFramework.Runtime.DefaultLogHelper
   m_CompressionHelperTypeName: UnityGameFramework.Runtime.DefaultCompressionHelper
   m_JsonHelperTypeName: UnityGameFramework.Runtime.DefaultJsonHelper
-  m_FrameRate: 120
+  m_FrameRate: 60
   m_GameSpeed: 1
   m_RunInBackground: 1
   m_NeverSleep: 1
@@ -640,8 +641,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 959bca2b68d03954897f38b1dbb00303, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_AvailableProcedureTypeNames: []
-  m_EntranceProcedureTypeName: 
+  m_AvailableProcedureTypeNames:
+  - GameMain.ProcedureInit
+  m_EntranceProcedureTypeName: GameMain.ProcedureInit
 --- !u!1 &140694
 GameObject:
   m_ObjectHideFlags: 0
@@ -1063,3 +1065,46 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_EnableStrictCheck: 0
+--- !u!1 &3902561452392010975
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4957839354932774207}
+  - component: {fileID: 6274640525072463297}
+  m_Layer: 0
+  m_Name: HotFix
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4957839354932774207
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3902561452392010975}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 433714}
+  m_RootOrder: 20
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6274640525072463297
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3902561452392010975}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3a28a8a0854416db14fd7c1a1a2f4bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
