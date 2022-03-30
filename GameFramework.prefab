@@ -642,8 +642,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_AvailableProcedureTypeNames:
-  - GameMain.ProcedureInit
-  m_EntranceProcedureTypeName: GameMain.ProcedureInit
+  - MainProject.Scripts.Procedure.ProcedureInit
+  - MainProject.Scripts.Procedure.ProcedureUpdateResource
+  m_EntranceProcedureTypeName: MainProject.Scripts.Procedure.ProcedureInit
 --- !u!1 &140694
 GameObject:
   m_ObjectHideFlags: 0
@@ -1108,3 +1109,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3a28a8a0854416db14fd7c1a1a2f4bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  url: http://192.168.1.175/HotFix.dll

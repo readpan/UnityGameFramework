@@ -12,6 +12,8 @@ using System;
 using System.Collections;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace UnityGameFramework.Runtime
@@ -71,20 +73,10 @@ namespace UnityGameFramework.Runtime
 
         private IEnumerator Start()
         {
-            var list = m_AvailableProcedureTypeNames.ToList();
-            var allTypes = HotfixComponent.HotfixAssembly.GetTypes();
-            foreach (var type in allTypes)
-            {
-                if (type.Namespace == "Hotfix.Procedure")
-                    list.Add(type.FullName);
-            }
-            m_AvailableProcedureTypeNames = list.ToArray();
             ProcedureBase[] procedures = new ProcedureBase[m_AvailableProcedureTypeNames.Length];
             for (int i = 0; i < m_AvailableProcedureTypeNames.Length; i++)
             {
-                //todo HotfixAssembly后续使用GF框架Manager写法
-                Type procedureType = Utility.Assembly.GetType(m_AvailableProcedureTypeNames[i]) ??
-                                     HotfixComponent.HotfixAssembly.GetType(m_AvailableProcedureTypeNames[i]);
+                Type procedureType = Utility.Assembly.GetType(m_AvailableProcedureTypeNames[i]);
                 if (procedureType == null)
                 {
                     Log.Error("Can not find procedure type '{0}'.", m_AvailableProcedureTypeNames[i]);
@@ -115,6 +107,45 @@ namespace UnityGameFramework.Runtime
             yield return new WaitForEndOfFrame();
 
             m_ProcedureManager.StartProcedure(m_EntranceProcedure.GetType());
+        }
+
+        public async UniTask UpdateHotProcedure()
+        {
+            var list = m_AvailableProcedureTypeNames.ToList();
+            var allTypes = HotfixComponent.HotfixAssembly.GetTypes();
+            foreach (var type in allTypes)
+            {
+                if (type.Namespace == "Hotfix.Procedure")
+                    list.Add(type.FullName);
+            }
+            m_AvailableProcedureTypeNames = list.ToArray();
+            ProcedureBase[] procedures = new ProcedureBase[m_AvailableProcedureTypeNames.Length];
+            for (int i = 0; i < m_AvailableProcedureTypeNames.Length; i++)
+            {
+                //todo HotfixAssembly后续使用GF框架Manager写法
+                Type procedureType = Utility.Assembly.GetType(m_AvailableProcedureTypeNames[i]) ??
+                                     HotfixComponent.HotfixAssembly.GetType(m_AvailableProcedureTypeNames[i]);
+                if (procedureType == null)
+                {
+                    Log.Error("Can not find procedure type '{0}'.", m_AvailableProcedureTypeNames[i]);
+                    return;
+                }
+
+                procedures[i] = (ProcedureBase)Activator.CreateInstance(procedureType);
+                if (procedures[i] == null)
+                {
+                    Log.Error("Can not create procedure instance '{0}'.", m_AvailableProcedureTypeNames[i]);
+                    return;
+                }
+            }
+
+            if (m_EntranceProcedure == null)
+            {
+                Log.Error("Entrance procedure is invalid.");
+            }
+
+            var fsm = GameFrameworkEntry.GetModule<IFsmManager>();
+            m_ProcedureManager.Initialize(fsm, procedures);
         }
 
         /// <summary>
