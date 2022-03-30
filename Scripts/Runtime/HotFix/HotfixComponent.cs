@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using Cysharp.Threading.Tasks;
+using GameFramework;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -17,12 +18,14 @@ namespace UnityGameFramework.Runtime
             await UpdateHotfixDll();
             LoadGameDll();
         }
+
         private void LoadGameDll()
         {
+            //todo 使用ab包模式读取
             if (m_LoadedFlag)
                 return;
             string gameDll = "";
-#if !UNITY_EDITOR
+#if UNITY_EDITOR
             gameDll = Application.dataPath + "/../Library/ScriptAssemblies/HotFix.dll";
             // 使用File.ReadAllBytes是为了避免Editor下gameDll文件被占用导致后续编译后无法覆盖
 #else
@@ -36,13 +39,17 @@ namespace UnityGameFramework.Runtime
 
         private async UniTask UpdateHotfixDll()
         {
-            var wr = new UnityWebRequest(url, UnityWebRequest.kHttpVerbGET);
-            wr.timeout = 10;
-            wr.downloadHandler = new DownloadHandlerFile(Path.Combine(Application.persistentDataPath, "HotFix.dll"));
-            Debug.Log($"下载开始url={url}");
-            wr.SendWebRequest();
-            await UniTask.WaitUntil(() => wr.isDone);
-            Debug.Log($"下载结束url={url}");
+            var downloadComponent = GameEntry.GetComponent<DownloadComponent>();
+            var downloadIndex = downloadComponent.AddDownload(Path.Combine(Application.persistentDataPath, "HotFix.dll"), url);
+            await UniTask.WaitUntil(() => downloadComponent.GetDownloadInfo(downloadIndex).Status == TaskStatus.Done);
+            //
+            // var wr = new UnityWebRequest(url, UnityWebRequest.kHttpVerbGET);
+            // wr.timeout = 10;
+            // wr.downloadHandler = new DownloadHandlerFile(Path.Combine(Application.persistentDataPath, "HotFix.dll"));
+            // Debug.Log($"下载开始url={url}");
+            // wr.SendWebRequest();
+            // await UniTask.WaitUntil(() => wr.isDone);
+            // Debug.Log($"下载结束url={url}");
         }
     }
 }

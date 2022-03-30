@@ -109,7 +109,7 @@ namespace UnityGameFramework.Runtime
             m_ProcedureManager.StartProcedure(m_EntranceProcedure.GetType());
         }
 
-        public async UniTask UpdateHotProcedure()
+        public void UpdateHotProcedure()
         {
             var list = m_AvailableProcedureTypeNames.ToList();
             var allTypes = HotfixComponent.HotfixAssembly.GetTypes();
